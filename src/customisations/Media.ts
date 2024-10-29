@@ -149,7 +149,7 @@ export class Media {
         if (!src) {
             throw new UserFriendlyError("error|download_media");
         }
-        const res = await fetch(src, { redirect: 'follow' });
+        const res = await fetch(src);
         if (!res.ok) {
             throw parseErrorResponse(res, await res.text());
         }
