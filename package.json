@@ -1,11 +1,11 @@
 {
-    "name": "@circles-project/matrix-react-sdk",
+    "name": "matrix-react-sdk",
     "version": "3.109.0",
     "description": "SDK for matrix.org using React",
     "author": "matrix.org",
     "repository": {
         "type": "git",
-        "url": "https://github.com/circles-project/matrix-react-sdk"
+        "url": "https://github.com/matrix-org/matrix-react-sdk"
     },
     "license": "Apache-2.0",
     "files": [
@@ -114,7 +114,7 @@
         "maplibre-gl": "^2.0.0",
         "matrix-encrypt-attachment": "^1.0.3",
         "matrix-events-sdk": "0.0.1",
-        "@circles-project/matrix-js-sdk": "34.5.0",
+        "matrix-js-sdk": "34.5.0",
         "matrix-widget-api": "^1.9.0",
         "memoize-one": "^6.0.0",
         "minimist": "^1.2.5",
@@ -246,8 +246,5 @@
         "outputDirectory": "coverage",
         "outputName": "jest-sonar-report.xml",
         "relativePaths": true
-    },
-    "publishConfig": {
-        "registry": "https://npm.pkg.github.com"
     }
 }
