@@ -61,6 +61,8 @@ export interface IMatrixClientCreds {
     guest?: boolean;
     pickleKey?: string;
     freshLogin?: boolean;
+
+    bsspekeHashKey: Uint8Array;
 }
 
 export interface MatrixClientPegAssignOpts {

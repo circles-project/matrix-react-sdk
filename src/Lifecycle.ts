@@ -872,6 +872,10 @@ async function persistCredentials(credentials: IMatrixClientCreds): Promise<void
     localStorage.setItem("mx_user_id", credentials.userId);
     localStorage.setItem("mx_is_guest", JSON.stringify(credentials.guest));
 
+    if (credentials.bsspekeHashKey) {
+        localStorage.setItem("circles_bssepke_hashkey", `[${credentials.bsspekeHashKey.toString()}]`);
+    }
+
     await persistAccessTokenInStorage(credentials.accessToken, credentials.pickleKey);
     await persistRefreshTokenInStorage(credentials.refreshToken, credentials.pickleKey);
 

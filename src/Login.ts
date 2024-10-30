@@ -25,6 +25,8 @@ import {
     OidcClientConfig,
 } from "matrix-js-sdk/src/matrix";
 import { logger } from "matrix-js-sdk/src/logger";
+// eslint-disable-next-line no-restricted-imports
+import { Client } from "matrix-js-sdk/src/bsspeke/BSSpekeWrapper.ts";
 
 import { IMatrixClientCreds } from "./MatrixClientPeg";
 import { ModuleRunner } from "./modules/ModuleRunner";
@@ -268,7 +270,33 @@ export async function sendLoginRequest(
         idBaseUrl: isUrl,
     });
 
+    // Swiclops does not accept localpart user... Also hardcoding domain selection for now...
+    // const id = data.identifier;
+    let domain = "";
+    switch(hsUrl) {
+        case "https://matrix.circu.li":
+            domain = "circu.li";
+            break;
+        case "https://matrix.eu.circu.li":
+            domain = "eu.circu.li";
+            break;
+        case "https://matrix.circles.futo.org":
+            domain = "circles.futo.org";
+            break;
+        case "https://matrix.eu.circles.futo.org":
+            domain = "eu.circles.futo.org";
+            break;
+    }
+
+    // In order to persist hashkey generation, previous context matters if accessing the value in different sessions, so have to do it here where
+    // it can be persisted in local storage
+    const userId = `@${loginParams.identifier.user}:${domain}`;
+    await Client.initialize(userId, domain, loginParams.password);
     const data = await client.login(loginType, loginParams);
+
+    const label = new TextEncoder().encode("matrix_ssss");
+    let k = new Uint8Array(32);
+    k = Client.generateHashedKey(k, label, label.length);
 
     const wellknown = data.well_known;
     if (wellknown) {
@@ -289,6 +317,8 @@ export async function sendLoginRequest(
         userId: data.user_id,
         deviceId: data.device_id,
         accessToken: data.access_token,
+
+        bsspekeHashKey: k,
     };
 
     ModuleRunner.instance.extensions.cryptoSetup.examineLoginResponse(data, creds);
