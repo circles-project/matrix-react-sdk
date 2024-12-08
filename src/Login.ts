@@ -270,23 +270,8 @@ export async function sendLoginRequest(
         idBaseUrl: isUrl,
     });
 
-    // Swiclops does not accept localpart user... Also hardcoding domain selection for now...
-    // const id = data.identifier;
-    let domain = "";
-    switch(hsUrl) {
-        case "https://matrix.circu.li":
-            domain = "circu.li";
-            break;
-        case "https://matrix.eu.circu.li":
-            domain = "eu.circu.li";
-            break;
-        case "https://matrix.circles.futo.org":
-            domain = "circles.futo.org";
-            break;
-        case "https://matrix.eu.circles.futo.org":
-            domain = "eu.circles.futo.org";
-            break;
-    }
+    // Swiclops does not accept localpart user...
+    const domain = hsUrl.substring(hsUrl.includes("matrix") ? 15 : 8);
 
     // In order to persist hashkey generation, previous context matters if accessing the value in different sessions, so have to do it here where
     // it can be persisted in local storage
